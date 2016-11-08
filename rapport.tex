@@ -1,0 +1,252 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+%%configuration de listings
+\lstset{
+language=c,
+basicstyle=\ttfamily\small, %
+identifierstyle=\color{red}, %
+keywordstyle=\color{blue}, %
+stringstyle=\color{black!60}, %
+commentstyle=\it\color{green!95!yellow!1}, %
+columns=flexible, %
+tabsize=2, %
+extendedchars=true, %
+showspaces=false, %
+showstringspaces=false, %
+numberstyle=\tiny, %
+breaklines=true, %
+breakautoindent=true, %
+captionpos=b
+}
+
+\usepackage{xcolor}
+
+
+%opening
+
+\title{\textbf{Algorithme de Huffman } }
+
+\author{Groupe 2 : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
+\date{}
+
+\begin{document}
+
+
+\clearpage
+\maketitle
+\today
+\clearpage
+\tableofcontents
+
+\clearpage
+
+\section{Introduction}
+
+\paragraph{David albert Huffman}
+
+\subparagraph{}
+Il est un professeur né le 9 août 1925 et mort le 7 octobre 1999. Il est un pionnier dans le domaine informatique. Durant toute sa vie, Huffman apporta des contributions importantes à l'étude des machines à états finis. 
+Mais Huffman est principalement connu pour l'invention du codage de Huffman utilisé dans presque toutes les applications qui impliquent la compression et la transmission de données numériques comme les fax, les modems, les réseaux informatiques et la télévision à haute définition.
+Huffman contribua beaucoup au développement de différents domaines, notamment dans la théorie de l’information et du codage, où il a été un pionnier dont les découvertes sont à la base des systèmes de compression de fichiers informatiques dans toutes les machines de nos jours.
+
+\paragraph{Principe du codage de huffman}
+
+\subparagraph{}
+	Le principe du codage de huffman repose sur la création d’un arbre composé de nœuds. Dans une phrase à coder on compte d’abord le nombre d’occurrence de chaque lettre. Chaque caractère constitue donc une feuille de l’arbre auquel on y associe sa valeur d’occurrence.
+Puis on crée l’arbre. On associe les deux nœuds ou feuilles avec les occurrences les plus faibles pour créer un nouveau nœud dont son occurrence et la somme des deux occurrences des feuilles. On fait cela jusqu’à qu’il en reste un qui devient la racine.
+Ensuite on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi pour obtenir le code binaire de chaque caractère on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
+
+\section{Compter la fréquence des caractères}
+\subsection{sous partie}
+
+\section{Arbre}
+\subsection{Principe}
+
+La création de l’arbre se fait en parcourant la liste trié. Elle prend les deux premières valeurs de la liste créer les feuilles puis va créer un nœud et donc un arbre. 
+Le nœud est crée en prenant les deux feuilles qui sont le fils gauche et le fils droit du nœud. Le nœud a pour valeur la somme des fréquences de ses fils. 
+Ensuite on va réitérer cela a toute les valeurs de la liste.
+
+\subsection{Structure pour l'arbre}
+\paragraph{Description}
+\subparagraph{}
+L'arbre contient la fréquence des lettres qui va nous permettre de créer les noeuds. Elle contient les lettres.
+On a un enum type qui va définir si c'est une feuille, un noeud ou une racine. Enfin on a une structure fils gauche et fils droit pour les noeuds.
+\paragraph{Code}
+\subparagraph{}
+\begin{lstlisting}
+ 
+ enum type {feuille,noeud,racine};
+
+ struct arbre		
+{
+	int frequence;
+	char lettre;
+	enum type types;
+	struct arbre *filsGauche;
+	struct arbre *filsDroit;
+
+};
+
+typedef struct arbre *arbres;
+\end{lstlisting}
+\subsection{Les fonctions}
+\subsubsection{créer feuille}
+\paragraph{Description}
+\subparagraph{}
+Pour créer une feuille on a besoin d'un entier et d'un caractère. On alloue un arbre ou le fils droit et le fils gauche sont nul.
+Ensuite on définit que la fréquence de cette arbre est la valeur d'entré et la lettre de cette arbre le caractère d'entrée.
+Endin on définit que c'est une feuile puis on retourne l'arbre.
+\paragraph{Code}
+
+\begin{lstlisting}
+ arbres creer_feuille(int x,char c)
+	{
+		arbres a=malloc(sizeof(struct arbre));
+		a->filsDroit=NULL;
+		a->filsGauche=NULL;
+		a->frequence=x;
+		a->lettre=c;
+		a->types=feuille;
+		return a;
+	}
+\end{lstlisting}
+\subsubsection{créer noeud}
+\paragraph{Description}
+\subparagraph{}
+La fonction créer noeud a pour entrée deux arbres. on alloue un arbre ou le fils droit va correspondre a un arbre et le fils gauche a l'autre arbre.
+La fréquence de cette arbre va être la somme des fréquences des deux arbres. Enfin on définit que c'est un noeud et on retourne l'arbre.
+\paragraph{Code}
+\subparagraph{}
+\begin{lstlisting}
+arbres creer_noeud(arbres a,arbres b)
+{
+	arbres c=malloc(sizeof(struct arbre));
+	c->filsDroit=b;
+	c->filsGauche=a;
+	c->frequence=b->frequence+a->frequence;
+	c->types=noeud;
+	return c;
+}
+\end{lstlisting}
+\subsubsection{créer racine}
+\paragraph{Description}
+\subparagraph{}
+La fonction créer racine est la même que créer noeud sauf qu'on définit c'est la racine de l'arbre.
+\paragraph{Code}
+\subparagraph{}
+\begin{lstlisting}
+ arbres creer_racine(arbres a,arbres b)
+{
+	arbres c=malloc(sizeof(struct arbre));
+	c->filsDroit=b;
+	c->filsGauche=a;
+	c->frequence=b->frequence+a->frequence;
+	c->types=racine;
+	return c;
+}
+\end{lstlisting}
+\subsubsection{créer arbre}
+\paragraph{Description}
+\subparagraph{}
+La création de l'arbre se fait en parcours la liste trié. Si l'élément suivant de la liste est différent de nulle 
+alors on regarde si l'arbre est nulle ou non. Si c'est le cas alors on va créer le premier noeud avec les deux premières valeur de la liste trié.
+Si ce n'est pas le cas alors on va regarder les fréquences dans la liste. Si la valeur de la fréquence est identique alors on va créer un noeud et on le met dans un autre arbre.
+Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine avec l'arbre.
+
+\paragraph{Code}
+\subparagraph{}
+\begin{lstlisting}
+ void creer_arbre(arbres *a,Liste l)
+{
+	arbres b=NULL;
+	arbres c=malloc(sizeof(struct arbre));
+
+	while(l->suivant!=NULL)
+	{
+		if(*a==NULL)
+		{
+			*a=creer_noeud(creer_feuille(l->valeur,l->lettre),creer_feuille(
+			      l->suivant->valeur,l->suivant->lettre));
+			supprimer(&l,l->valeur);
+			supprimer(&l,l->valeur);	
+		}
+		else
+		{
+			if(l->valeur==l->suivant->valeur)
+			{
+				if(b==NULL)
+				{
+					b=creer_noeud(creer_feuille(l->valeur,l->lettre),creer_feuille(
+					    l->suivant->valeur,l->suivant->lettre));
+					supprimer(&l,l->valeur);
+					supprimer(&l,l->valeur);
+				}
+				else
+				{
+					c=creer_noeud(creer_feuille(l->valeur,l->lettre),creer_feuille(
+					    l->suivant->valeur,l->suivant->lettre));
+					supprimer(&l,l->valeur);
+					supprimer(&l,l->valeur);
+					b=creer_noeud(c,b);
+				}
+				*a=creer_noeud(b,*a);
+			}
+			else
+			{
+				*a=creer_noeud(creer_feuille(l->valeur,l->lettre),*a);
+				supprimer(&l,l->valeur);
+			}
+							
+		}
+	}
+	*a=creer_racine(creer_feuille(l->valeur,l->lettre),*a);
+}
+\end{lstlisting}
+
+\subsubsection{Affichage de l'arbre}
+\paragraph{Description}
+\subparagraph{}
+jhefe e
+ejfeifjeij efjef
+jef.
+
+\paragraph{Code}
+\subparagraph{}
+\begin{lstlisting}
+void prefixe(arbres a)
+{
+
+		if (a!=NULL)
+		{
+			
+			if (a->types==feuille)
+			{
+				printf("%d",a->frequence);
+				printf("%c\n",a->lettre);
+				prefixe(a->filsGauche);
+				prefixe(a->filsDroit);
+				
+			}
+			else
+			{
+				printf("%d\n",a->frequence);
+				prefixe(a->filsGauche);
+				prefixe(a->filsDroit);
+			}
+		}
+}
+\end{lstlisting}
+
+
+\section{Compression}
+\subsection{Principe}
+
+
+\section{Décompression}
+\subsection{Principe}
+
+\end{document}
