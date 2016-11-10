@@ -63,10 +63,21 @@ alors on regarde si l'arbre est nulle ou non. Si c'est le cas alors on va créer
 Si ce n'est pas le cas alors on va regarder les fréquences dans la liste. Si la valeur de la fréquence est identique alors on va créer un noeud et on le met dans un autre arbre.
 Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine avec l'arbre.
 
+\subsection{Réalisation d'un dictionnaire listant le codage de chaque caractère}
+\subparagraph{}
+Ce bloc permettra de coder chaque caractère du fichier à compresser en binaire. C'est cette opération que l'on appellera compression du document.
+
+Pour réaliser ce bloc, il faudra utiliser l'arbre créé auparavant dans le bloc 2. Grâce à cet arbre, on pourra coder chaque caractère en binaire suivant le chemin emprunté dans l'arbre.
+Par exemple ici, on établira que pour chaque chemin vers la gauche emprunté, un "0" sera codé pour le caractère trouvé. Lorsque le chemin emprunté est celui du fils droit, le codage sera un "1".
+
+C'est pourquoi la réalisation de ce bloc se basera sur une boucle de lecture de l'arbre. En premier temps la réalisation de cette lecture serait faite de manière préfixe, avec une variable binaire qui contiendrait le codage du caractère, s'incrémentant par un décalage de bit à chaque mouvement dans l'arbre jusqu'à attendre une feuille. Par soucis de temps et de solutions, un second choix a été réalisé: L'arbre sera lu de haut en bas jusqu'à atteindre une feuille, le codage et le caractère sera écrit dans le fichier puis la feuille sera supprimée. La lecture sera relancée, jusqu'à ce que l'arbre soit vide.
+
 
 \section{Compression}
 \subsection{Principe}
+Après avoir réalisé ces 3 blocs, nous avons à disposition tout les outils pour réaliser la compression et la décompression d'un fichier.
 
+La compression consiste à lire le fichier à compresser et remplacer chaque caractère par son codage listé dans le dictionnaire.
 
 \section{Décompression}
 \subsection{Principe}
@@ -74,6 +85,9 @@ Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. 
 La décompression va lire le fichier compressé qui contient une en-tête et le fichier texte compressé. L'en-tête contient l'arbre crée précédement.
 Pour décompresser le fichier on lit le fichier qui contient des 1 et des 0 puis on parcours l'arbres. Dés que l'on arrive a une feuille dans l'arbre alors on mets la lettre trouvé dans 
 le fichier décompressé et on continue ainsi jusqu'à la fin du fichier.
+
+(A voir) La décompression peut se faire de 2 manières: l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
+La seconde méthode consiste à intégrer l'arbre dans l'en-tête, et on retrouvera le caractère en suivant le chemin suivi avec le codage du fichier compressé. Cette méthode est plus complexe pour intégrer l'arbre à l'en-tête, mais plus simple à la suite pour décompresser le fichier.
 
 
 \end{document}
