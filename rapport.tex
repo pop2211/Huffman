@@ -2,23 +2,22 @@
 \usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-
+\usepackage{graphicx}
 
 
 %opening
 
 \title{\textbf{Algorithme de Huffman } }
 
-\author{Groupe 2 : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
+\author{Groupe : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
 \date{}
 
 \begin{document}
 
+\maketitle
 
 \clearpage
-\maketitle
-\today
-\clearpage
+
 \tableofcontents
 
 \clearpage
@@ -40,7 +39,16 @@ Puis on crée l’arbre. On associe les deux nœuds ou feuilles avec les occurre
 Ensuite on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi pour obtenir le code binaire de chaque caractère on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
 
 \section{Compter la fréquence des caractères}
-\subsection{sous partie}
+
+Le principe de l'algorithme est de remplacer les lettres du document par des codes. Afin de gagner de la place, plus la lettre apparaît de fois et plus le code lui correspondant doit être court.  Avant d’attribuer le code il est donc nécessaire de calculer la fréquence des caractères. \\
+Pour cela j’ai utilisé une structure de liste chaînée contenant le caractère et l’occurrence de son apparition dans le texte. Pour implémenter cette liste, on parcours les caractères du fichier un à un. Malheureusement ,un caractère UTF-8 ou ISO 8859-1 est composé de plusieurs octets pour pouvoir utilisé l’ASCII étendu (>127). Mais le langage C ne gère pas ce codage car dans ce langage, 1 caractère = 1 octet. 
+Ainsi seul les caractères de l’ASCII simples étaient correctement comptés donc les caractères accentués de la langue française ne l’étaient pas.  Après une recherche de solutions improductives, nous avons décidé de continuer le développement de l’application en utilisant l’algorithme sans accent.\\
+Pour revenir à la liste chaînée, elle est au début vide mais on ajoute à chaque fois le caractère lu à la première position si il n’existe pas déjà dans la liste. Sinon on incrémente l’occurrence correspondant à ce caractère. Afin d’avoir un algorithme performant la liste doit être trié de l’élément le moins présent à celui le plus présent. Donc lors de l’incrémentation, il faut parfois trier la liste chaînée. \\
+J’ai réalisé le tri non pas en échangeant les pointeurs de 2 maillons mais simplement en inversant les données (caractère, occurrence) entre maillons jusqu’à être à la bonne place.\\
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{schema.jpg}
+\end{center}
 
 \section{Arbre}
 \subsection{Principe}
