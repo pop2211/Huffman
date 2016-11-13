@@ -2,23 +2,22 @@
 \usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-
+\usepackage{graphicx}
 
 
 %opening
 
 \title{\textbf{Algorithme de Huffman } }
 
-\author{Groupe 2 : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
+\author{Groupe : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
 \date{}
 
 \begin{document}
 
+\maketitle
 
 \clearpage
-\maketitle
-\today
-\clearpage
+
 \tableofcontents
 
 \clearpage
@@ -40,8 +39,51 @@ Le principe du codage de huffman repose sur la création d’un arbre composé d
 Puis on crée l’arbre. On associe les deux nœuds ou feuilles avec les occurrences les plus faibles pour créer un nouveau nœud dont son occurrence et la somme des deux occurrences des feuilles. On fait cela jusqu’à qu’il en reste un qui devient la racine.
 Ensuite on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi pour obtenir le code binaire de chaque caractère on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
 
+\paragraph{Déroulement du projet}
+\subparagraph{}
+Pour réaliser le projet, nous nous sommes réparti le travail en 3 parties : 
+\begin{itemize}
+\item La fréquence des caractères du document source réalisée par Bastien
+\item La création de l'arbre binaire réalisée par Anthony
+\item Réalisation d'un dictionnaire listant le codage de chaque caractère réalisé par Corentin
+\end{itemize}
+
+
+
+
+
+
+
 \section{Compter la fréquence des caractères}
-\subsection{sous partie}
+\subparagraph{}
+Le principe de l'algorithme est de remplacer les lettres du document par des codes. Afin de gagner de la place, plus la lettre apparaît de fois et plus le code lui correspondant doit être court.
+Avant d’attribuer le code il est donc nécessaire de calculer la fréquence des caractères dans le document.
+
+\subsection{Structure de liste chainée}
+\subparagraph{}
+Pour compter les caractères j’ai utilisé une structure de liste chaînée contenant le caractère et l’occurrence de son apparition dans le document. 
+Pour implémenter cette liste, on parcours les caractères du fichier un à un pour les ajouter dans la liste.
+ 
+\subsection{Problème des caractères de l'ASCII étendu}
+\subparagraph{}
+Malheureusement ,un caractère UTF-8 ou ISO 8859-1 est composé de plusieurs octets pour pouvoir utilisé l’ASCII étendu (>127). 
+Mais le langage C ne gère pas nativemment ce codage car dans ce langage, 1 caractère = 1 octet. 
+Ainsi seul les caractères de l’ASCII simples étaient correctement comptés donc les caractères accentués de la langue française, par exemple, ne l’étaient pas.
+Après une recherche de solutions improductives, nous avons décidé de continuer le développement de l’application en utilisant l’algorithme sans accent.
+
+\subsection{Insertion et tri dans la liste chainée}
+Pour revenir à la liste chaînée, elle est au début vide mais on ajoute à chaque fois le caractère lu à la première position si il n’existe pas déjà dans la liste. 
+Sinon, si il est déjà présent, on incrémente l’occurrence correspondant à ce caractère. Afin d’avoir un algorithme performant la liste doit être trié de l’élément le moins présent à celui le plus présent.
+Ainsi lors de l’incrémentation, il faut parfois trier la liste chaînée. \\
+J’ai réalisé le tri non pas en échangeant les pointeurs de 2 maillons mais simplement en inversant les données (caractère, occurrence) entre maillons jusqu’à être à la bonne place. 
+C'est à dire que l'occurence contenue dans la liste à droite de celle qu'on déplace doit être supérieur ou égal à l'occurence de cette dernière.
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{schema.jpg}
+\end{center}
+
+
+
 
 \section{Arbre}
 \subsection{Principe}
