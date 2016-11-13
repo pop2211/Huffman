@@ -27,6 +27,7 @@
 
 \paragraph{David albert Huffman}
 
+\subparagraph{Qui est Huffman?}
 \subparagraph{}
 Il est un professeur né le 9 août 1925 et mort le 7 octobre 1999. Il est un pionnier dans le domaine informatique. Durant toute sa vie, Huffman apporta des contributions importantes à l'étude des machines à états finis. 
 Mais Huffman est principalement connu pour l'invention du codage de Huffman utilisé dans presque toutes les applications qui impliquent la compression et la transmission de données numériques comme les fax, les modems, les réseaux informatiques et la télévision à haute définition.
@@ -53,8 +54,7 @@ Ensuite on va réitérer cela a toute les valeurs de la liste.
 \paragraph{Description}
 \subparagraph{}
 L'arbre contient la fréquence des lettres et les lettres qui vont nous permettre de créer les feuilles et les noeuds.
-Enfin on a une structure fils gauche et fils droit pour les noeuds.
-
+Enfin on a une structure fils gauche et fils droit pour les noeuds ou le fils fauche et le fils droit vont pointer vers un noeud ou une feuille.
 
 \subsection{Création de l'arbre}
 \subparagraph{}
@@ -89,5 +89,14 @@ le fichier décompressé et on continue ainsi jusqu'à la fin du fichier.
 (A voir) La décompression peut se faire de 2 manières: l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
 La seconde méthode consiste à intégrer l'arbre dans l'en-tête, et on retrouvera le caractère en suivant le chemin suivi avec le codage du fichier compressé. Cette méthode est plus complexe pour intégrer l'arbre à l'en-tête, mais plus simple à la suite pour décompresser le fichier.
 
+\section{Comparaison différente compression}
 
+
+\section{Amélioration}
+
+Notre code est minimaliste et de nombreux point peut être amélioré.
+
+\subparagraph{encodage :}
+L'encodage actuelle ne prend pas les accents et donc dans notre langue le français cela est problèmatique.
+Notre programme prend donc que des caractères non accentués.
 \end{document}
