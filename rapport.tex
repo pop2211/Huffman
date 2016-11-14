@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -69,7 +69,9 @@ Pour implémenter cette liste, on parcours les caractères du fichier un à un p
 Malheureusement ,un caractère UTF-8 ou ISO 8859-1 est composé de plusieurs octets pour pouvoir utilisé l’ASCII étendu (>127). 
 Mais le langage C ne gère pas nativemment ce codage car dans ce langage, 1 caractère = 1 octet. 
 Ainsi seul les caractères de l’ASCII simples étaient correctement comptés donc les caractères accentués de la langue française, par exemple, ne l’étaient pas.
-Après une recherche de solutions improductives, nous avons décidé de continuer le développement de l’application en utilisant l’algorithme sans accent.
+Après une recherche de solutions improductives, nous avons en fin de projet, trouvé une solution. 
+Avec la librairie WCHAR, on définit tous les caractères en type wchar t et toute les fonctions telle que fprint sont transformé en wfprintf.
+Le problème des caractères de l'ASCII étendu sont donc désormais correctement dénombrés.
 
 \subsection{Insertion et tri dans la liste chainée}
 Pour revenir à la liste chaînée, elle est au début vide mais on ajoute à chaque fois le caractère lu à la première position si il n’existe pas déjà dans la liste. 
