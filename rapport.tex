@@ -88,22 +88,22 @@ C'est à dire que l'occurence contenue dans la liste à droite de celle qu'on d�
 \section{Arbre}
 \subsection{Principe}
 
-La création de l’arbre se fait en parcourant la liste trié. Elle prend les deux premières valeurs de la liste créer les feuilles puis va créer un nœud et donc un arbre. 
+La création de l’arbre se fait en parcourant la liste trié. Elle prend les deux premières valeurs de la liste on va créer les feuilles puis on va créer un nœud et donc un arbre. 
 Le nœud est crée en prenant les deux feuilles qui sont le fils gauche et le fils droit du nœud. Le nœud a pour valeur la somme des fréquences de ses fils. 
 Ensuite on va réitérer cela a toute les valeurs de la liste.
 
 \subsection{Structure pour l'arbre}
 \paragraph{Description}
 \subparagraph{}
-L'arbre contient la fréquence des lettres et les lettres qui vont nous permettre de créer les feuilles et les noeuds.
-Enfin on a une structure fils gauche et fils droit pour les noeuds ou le fils fauche et le fils droit vont pointer vers un noeud ou une feuille.
+L'arbre contient la fréquence des lettres compté précédement et les lettres qui vont nous permettre de créer les feuilles et les noeuds.
+Enfin on a une structure fils gauche et fils droit pour les noeuds ou le fils gauche et le fils droit vont pointer vers un noeud ou une feuille.
 
 \subsection{Création de l'arbre}
 \subparagraph{}
-La création de l'arbre se fait en parcours la liste trié. Si l'élément suivant de la liste est différent de nulle 
-alors on regarde si l'arbre est nulle ou non. Si c'est le cas alors on va créer le premier noeud avec les deux premières valeur de la liste trié.
+La création de l'arbre se fait en parcourant la liste triée. Si l'élément suivant de la liste est différent de nulle 
+alors on regarde si l'arbre est nulle ou non. Si c'est le cas alors on va créer le premier noeud avec les deux premières valeur de la liste triée.
 Si ce n'est pas le cas alors on va regarder les fréquences dans la liste. Si la valeur de la fréquence est identique alors on va créer un noeud et on le met dans un autre arbre.
-Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine avec l'arbre.
+Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine de l'arbre.
 
 \begin{center}
 
@@ -150,4 +150,7 @@ Notre code est minimaliste et de nombreux point peut être amélioré.
 \subparagraph{encodage :}
 L'encodage actuelle ne prend pas les accents et donc dans notre langue le français cela est problèmatique.
 Notre programme prend donc que des caractères non accentués.
+
+\subparagraph{arbre :}
+Quand on a un fichier vide ou un fichier contenant deux caractères ce cas n'est pas géré pour la création de l'arbre.
 \end{document}
