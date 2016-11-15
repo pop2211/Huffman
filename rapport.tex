@@ -129,8 +129,10 @@ C'est pourquoi la réalisation de ce bloc se basera sur une boucle de lecture de
 \section{Compression}
 \subsection{Principe}
 Après avoir réalisé ces 3 blocs, nous avons à disposition tout les outils pour réaliser la compression et la décompression d'un fichier.
-
 La compression consiste à lire le fichier à compresser et remplacer chaque caractère par son codage listé dans le dictionnaire.
+On parcours le fichier source et on recupére le premier caractère. On compare ensuite le caractère récupéré avec notre table codage. Une fois le caractère
+retrouvé dans notre table on va copier le code correspondant a ce caractère dans notre fichier codé.
+
 
 \section{Décompression}
 \subsection{Principe}
@@ -143,15 +145,12 @@ le fichier décompressé et on continue ainsi jusqu'à la fin du fichier.
 La seconde méthode consiste à intégrer l'arbre dans l'en-tête, et on retrouvera le caractère en suivant le chemin suivi avec le codage du fichier compressé. Cette méthode est plus complexe pour intégrer l'arbre à l'en-tête, mais plus simple à la suite pour décompresser le fichier.
 
 \section{Comparaison différente compression}
-
+huffman interessant sur de gros fichiers mais un petit fichier le fichier originale est plus petit que celui compressé.
 
 \section{Amélioration}
 
 Notre code est minimaliste et de nombreux point peut être amélioré.
 
-\subparagraph{encodage :}
-L'encodage actuelle ne prend pas les accents et donc dans notre langue le français cela est problèmatique.
-Notre programme prend donc que des caractères non accentués.
 
 \subparagraph{arbre :}
 Quand on a un fichier vide ou un fichier contenant deux caractères ce cas n'est pas géré pour la création de l'arbre.
