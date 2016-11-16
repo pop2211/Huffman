@@ -2,19 +2,54 @@
 \usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{graphicx}
+\usepackage[pdftex]{graphicx}
 
 
-%opening
-
-\title{\textbf{Algorithme de Huffman } }
-
-\author{Groupe : Poupelin Bastien, Cherruau Anthony, Thebaudin Corentin}
-\date{}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+
+    % Upper part of the page. The '~' is needed because \\
+    % only works if a paragraph has started.
+    \includegraphics[scale=0.04]{}~\\[1.5cm]
+
+    \textsc{\LARGE Université d'Angers}\\[2cm]
+
+   
+
+    % Title
+    \HRule \\[0.4cm]
+    { \huge \bfseries HUFFMAN } \\[0.4cm] }
+
+    \HRule \\[2cm]
+    \includegraphics[scale=0.2]{}
+    \\[2cm]
+
+    % Author and supervisor
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        CHERRUAU \textsc{Anthony}\\
+        POUPELIN \textsc{Bastien}\\
+        THEBAUDIN \textsc{Corentin}\\
+      \end{flushleft}
+    \end{minipage}
+    
+
+    \vfill
+
+    % Bottom of the page
+    {\large 16 novembre 2016}
+
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
 
 \clearpage
 
