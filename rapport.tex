@@ -1,6 +1,6 @@
 \documentclass[a4paper,12pt]{article}
-\usepackage[francais]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[pdftex]{graphicx}
 
@@ -18,7 +18,7 @@
 
     % Upper part of the page. The '~' is needed because \\
     % only works if a paragraph has started.
-    \includegraphics[scale=0.04]{}~\\[1.5cm]
+    \includegraphics[scale=0.04]{univangers.jpg}~\\[1.5cm]
 
     \textsc{\LARGE Université d'Angers}\\[2cm]
 
@@ -26,10 +26,9 @@
 
     % Title
     \HRule \\[0.4cm]
-    { \huge \bfseries HUFFMAN } \\[0.4cm] }
+    { \huge \bfseries HUFFMAN}{\bfseries  \\[0.4cm] }
 
     \HRule \\[2cm]
-    \includegraphics[scale=0.2]{}
     \\[2cm]
 
     % Author and supervisor
@@ -74,6 +73,7 @@ Le principe du codage de huffman repose sur la création d’un arbre composé d
 Puis on crée l’arbre. On associe les deux nœuds ou feuilles avec les occurrences les plus faibles pour créer un nouveau nœud dont son occurrence et la somme des deux occurrences des feuilles. On fait cela jusqu’à qu’il en reste un qui devient la racine.
 Ensuite on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi pour obtenir le code binaire de chaque caractère on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
 
+\clearpage
 \paragraph{Déroulement du projet}
 \subparagraph{}
 Pour réaliser le projet, nous nous sommes réparti le travail en 3 parties : 
@@ -81,14 +81,10 @@ Pour réaliser le projet, nous nous sommes réparti le travail en 3 parties :
 \item La fréquence des caractères du document source réalisée par Bastien
 \item La création de l'arbre binaire réalisée par Anthony
 \item Réalisation d'un dictionnaire listant le codage de chaque caractère réalisé par Corentin
+\item Mise en place de la compression et la décompression 
 \end{itemize}
 
-
-
-
-
-
-
+\clearpage
 \section{Compter la fréquence des caractères}
 \subparagraph{}
 Le principe de l'algorithme est de remplacer les lettres du document par des codes. Afin de gagner de la place, plus la lettre apparaît de fois et plus le code lui correspondant doit être court.
@@ -101,53 +97,55 @@ Pour implémenter cette liste, on parcours les caractères du fichier un à un p
  
 \subsection{Problème des caractères de l'ASCII étendu}
 \subparagraph{}
-Malheureusement ,un caractère UTF-8 ou ISO 8859-1 est composé de plusieurs octets pour pouvoir utilisé l’ASCII étendu (>127). 
-Mais le langage C ne gère pas nativemment ce codage car dans ce langage, 1 caractère = 1 octet. 
+Malheureusement, un caractère UTF-8 ou ISO 8859-1 est composé de plusieurs octets pour pouvoir utilisé l’ASCII étendu (>127). 
+Mais le langage C ne gère pas nativement ce codage car dans ce langage, 1 caractère = 1 octet. 
 Ainsi seul les caractères de l’ASCII simples étaient correctement comptés donc les caractères accentués de la langue française, par exemple, ne l’étaient pas.
 Après une recherche de solutions improductives, nous avons en fin de projet, trouvé une solution. 
-Avec la librairie WCHAR, on définit tous les caractères en type wchar t et toute les fonctions telle que fprint sont transformé en wfprintf.
+Avec la librairie WCHAR, on définit tous les caractères en type wchar\_t et toute les fonctions telle que fprint sont transformé en wfprintf.
 Le problème des caractères de l'ASCII étendu sont donc désormais correctement dénombrés.
 
 \subsection{Insertion et tri dans la liste chainée}
-Pour revenir à la liste chaînée, elle est au début vide mais on ajoute à chaque fois le caractère lu à la première position si il n’existe pas déjà dans la liste. 
+Pour revenir à la liste chaînée, elle est au début vide mais on ajoute à chaque fois le caractère lu à la première position s'il n’existe pas déjà dans la liste. 
 Sinon, si il est déjà présent, on incrémente l’occurrence correspondant à ce caractère. Afin d’avoir un algorithme performant la liste doit être trié de l’élément le moins présent à celui le plus présent.
-Ainsi lors de l’incrémentation, il faut parfois trier la liste chaînée. \\
-J’ai réalisé le tri non pas en échangeant les pointeurs de 2 maillons mais simplement en inversant les données (caractère, occurrence) entre maillons jusqu’à être à la bonne place. 
-C'est à dire que l'occurence contenue dans la liste à droite de celle qu'on déplace doit être supérieur ou égal à l'occurence de cette dernière.
+Ainsi lors de l’incrémentation, il faut parfois trier la liste chaînée. 
+\newline
+On a réalisé le tri non pas en échangeant les pointeurs de 2 maillons mais simplement en inversant les données (caractère, occurrence) entre maillons jusqu’à être à la bonne place. 
+C'est à dire que l'occurrence contenue dans la liste à droite de celle qu'on déplace doit être supérieur ou égal à l'occurrence de cette dernière.
 
+\newline
 \begin{center}
 \includegraphics[width=0.6\textwidth]{schema.jpg}
 \end{center}
+\begin{center}
+Principe comptage occurrence
+\end{center}
 
 
-
-
+\clearpage
 \section{Arbre}
 \subsection{Principe}
 
-La création de l’arbre se fait en parcourant la liste trié. Elle prend les deux premières valeurs de la liste on va créer les feuilles puis on va créer un nœud et donc un arbre. 
-Le nœud est crée en prenant les deux feuilles qui sont le fils gauche et le fils droit du nœud. Le nœud a pour valeur la somme des fréquences de ses fils. 
+La création de l’arbre se fait en parcourant la liste triée. Elle prend les deux premières valeurs de la liste on va créer les feuilles puis on va créer un nœud et donc un arbre. 
+Le nœud est créé en prenant les deux feuilles qui sont le fils gauche et le fils droit du nœud. Le nœud a pour valeur la somme des fréquences de ses fils. 
 Ensuite on va réitérer cela a toute les valeurs de la liste.
 
 \subsection{Structure pour l'arbre}
-\paragraph{Description}
-\subparagraph{}
-L'arbre contient la fréquence des lettres compté précédement et les lettres qui vont nous permettre de créer les feuilles et les noeuds.
-Enfin on a une structure fils gauche et fils droit pour les noeuds ou le fils gauche et le fils droit vont pointer vers un noeud ou une feuille.
+\paragraph{}
+L'arbre contient la fréquence des lettres compté précédemment et les lettres qui vont nous permettre de créer les feuilles et les nœuds.
+Enfin on a une structure fils gauche et fils droit pour les noeuds ou le fils gauche et le fils droit vont pointer vers un nœud ou une feuille.
 
 \subsection{Création de l'arbre}
 \subparagraph{}
-La création de l'arbre se fait en parcourant la liste triée. Si l'élément suivant de la liste est différent de nulle 
-alors on regarde si l'arbre est nulle ou non. Si c'est le cas alors on va créer le premier noeud avec les deux premières valeur de la liste triée.
-Si ce n'est pas le cas alors on va regarder les fréquences dans la liste. Si la valeur de la fréquence est identique alors on va créer un noeud et on le met dans un autre arbre.
-Sinon on crée un noeud avec le premier noeud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine de l'arbre.
+La création de l'arbre se fait en parcourant la liste triée. Si l'élément suivant de la liste est différent de nulle alors on regarde si l'arbre est nulle ou non. 
+Si c'est le cas alors on va créer le premier nœud avec les deux premières valeurs de la liste triée.
+Si ce n'est pas le cas alors on va regarder les fréquences dans la liste. Si la valeur de la fréquence est identique alors on va créer un nœud et on le met dans un autre arbre.
+Sinon on crée un nœud avec le premier nœud puis on assemble les deux arbres. A la fin il reste une valeur et donc on va créer la racine de l'arbre.
 
 \begin{center}
-
-\includegraphics[width=0.6\textwidth]{arbre.jpg}
+\includegraphics[width=0.4\textwidth]{arbre.jpg}
 \end{center}
 \begin{center}
-exemple d'arbre obtenu 
+Exemple d'arbre obtenu 
 \end{center}
 
 
@@ -158,35 +156,80 @@ Ce bloc permettra de coder chaque caractère du fichier à compresser en binaire
 Pour réaliser ce bloc, il faudra utiliser l'arbre créé auparavant dans le bloc 2. Grâce à cet arbre, on pourra coder chaque caractère en binaire suivant le chemin emprunté dans l'arbre.
 Par exemple ici, on établira que pour chaque chemin vers la gauche emprunté, un "0" sera codé pour le caractère trouvé. Lorsque le chemin emprunté est celui du fils droit, le codage sera un "1".
 
-C'est pourquoi la réalisation de ce bloc se basera sur une boucle de lecture de l'arbre. En premier temps la réalisation de cette lecture serait faite de manière préfixe, avec une variable binaire qui contiendrait le codage du caractère, s'incrémentant par un décalage de bit à chaque mouvement dans l'arbre jusqu'à attendre une feuille. Par soucis de temps et de solutions, un second choix a été réalisé: L'arbre sera lu de haut en bas jusqu'à atteindre une feuille, le codage et le caractère sera écrit dans le fichier puis la feuille sera supprimée. La lecture sera relancée, jusqu'à ce que l'arbre soit vide.
+C'est pourquoi la réalisation de ce bloc se basera sur une boucle de lecture de l'arbre. 
+En premier temps la réalisation de cette lecture serait faite de manière préfixe, avec une variable binaire qui contiendrait le codage du caractère, s'incrémentant par un décalage de bit à chaque mouvement dans l'arbre jusqu'à attendre une feuille. 
+Par soucis de temps et de solutions, un second choix a été réalisé : L'arbre sera lu de haut en bas jusqu'à atteindre une feuille, le codage et le caractère sera écrit dans le fichier puis la feuille sera supprimée. La lecture sera relancée, jusqu'à ce que l'arbre soit vide.
 
-
+\clearpage
 \section{Compression}
 \subsection{Principe}
-Après avoir réalisé ces 3 blocs, nous avons à disposition tout les outils pour réaliser la compression et la décompression d'un fichier.
+Après avoir réalisé ces 3 blocs, nous avons à disposition tous les outils pour réaliser la compression et la décompression d'un fichier.
 La compression consiste à lire le fichier à compresser et remplacer chaque caractère par son codage listé dans le dictionnaire.
-On parcours le fichier source et on recupére le premier caractère. On compare ensuite le caractère récupéré avec notre table codage. Une fois le caractère
-retrouvé dans notre table on va copier le code correspondant a ce caractère dans notre fichier codé.
+On parcourt le fichier source et on recupère le premier caractère. On compare ensuite le caractère récupéré avec notre table codage. 
+Une fois le caractère retrouvé dans notre table on va copier le code correspondant à ce caractère dans notre fichier codé.
 
+\subsection{Mise en place}
+Malheureusement la mise en place de la compression n'est pas implémenté.
+La gestion des bits est quelque chose que nous n'avons pas réussi a comprendre.
+Malgré nos différents essaie nous avons fait un programme qui compresse 5\% du fichier ce qui ne correspond pas a l'algorithme d'huffman qui est plutôt de l'odre de 45\%
 
 \section{Décompression}
 \subsection{Principe}
 \subparagraph{}
-La décompression va lire le fichier compressé qui contient une en-tête et le fichier texte compressé. L'en-tête contient l'arbre crée précédement.
-Pour décompresser le fichier on lit le fichier qui contient des 1 et des 0 puis on parcours l'arbres. Dés que l'on arrive a une feuille dans l'arbre alors on mets la lettre trouvé dans 
+La décompression va lire le fichier compressé qui contient un en-tête et le fichier texte compressé. L'en-tête contient l'arbre crée précédemment.
+Pour décompresser le fichier on lit le fichier qui contient des 1 et des 0 puis on parcours l'arbres. Dès que l'on arrive a une feuille dans l'arbre alors on met la lettre trouvé dans 
 le fichier décompressé et on continue ainsi jusqu'à la fin du fichier.
 
-(A voir) La décompression peut se faire de 2 manières: l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
+(A voir) La décompression peut se faire de deux manières : l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
 La seconde méthode consiste à intégrer l'arbre dans l'en-tête, et on retrouvera le caractère en suivant le chemin suivi avec le codage du fichier compressé. Cette méthode est plus complexe pour intégrer l'arbre à l'en-tête, mais plus simple à la suite pour décompresser le fichier.
 
 \section{Comparaison différente compression}
-huffman interessant sur de gros fichiers mais un petit fichier le fichier originale est plus petit que celui compressé.
+huffman est intéressant sur de gros fichiers mais pour un petit fichier le fichier originale est plus petit que celui compressé.
+On a fait un tableau récapitulatif de différente compression pour comparer a l'algorithme d'Huffman.
+
+
+
+\begin{tabular}{|c|c|c|}
+\hline
+Type de compression &  taille du fichier & taille fichier compressé\\
+\hline
+Huffman & 8,5ko & 4,8\\
+
+\hline
+gzip&8,5ko&4ko\\
+\hline
+tar&8,5ko&10,2ko\\
+\hline
+bzip2&8,5ko&3,8ko\\
+\hline
+\end{tabular}
+
+
+\newline
+\newline
+En comparant ces différents algorithme one remarque que l'algorithme d'Huffman a un bon taux de compression 
+avec un taux de 43\%. Bzip2 est celui avec le meilleur taux de compression de 55\%.
+\newline
+On voit donc que l'algorithme d'huffman seul est assez efficace comparé aux autres format de compression.
+
 
 \section{Amélioration}
 
-Notre code est minimaliste et de nombreux point peut être amélioré.
+Notre code n'étant pas fini, de nombreux point peut être amélioré.
 
+\subparagraph{compression et décompression}
+Nous avons eu assez de mal a comprendre la mise en place des bits en c et c'est pour cela que la compression ne fonctionne pas.  
 
 \subparagraph{arbre :}
 Quand on a un fichier vide ou un fichier contenant deux caractères ce cas n'est pas géré pour la création de l'arbre.
+
+\subparagraph{encodage :}
+Au lieu d'utiliser une liste qui contient le codage, on peut mettre cette table dans un fichier et pour faire la compression on lit ce fichier et le fichier source.
+\clearpage
+\section{Apport personnel}
+
+Ce projet nous a permis de nous améliorer dans le langage c, de voir comment gérer les caractères accentués. 
+Ils nous a aussi permis de revoir les listes , les arbres, la lecture et l'écriture de fichier. 
+On a ainsi pu voir la mise en place des bitwize en c malgré que cela ne soit pas implémenté dans notre code.
+
 \end{document}
