@@ -26,7 +26,9 @@
 
     % Title
     \HRule \\[0.4cm]
-    { \huge \bfseries HUFFMAN}{\bfseries  \\[0.4cm] }
+    { \huge \bfseries PROJET TUTEURÉ
+    
+    ALGORITHME D'HUFFMAN}{\bfseries  \\[0.4cm] }
 
     \HRule \\[2cm]
     \\[2cm]
@@ -37,6 +39,8 @@
         CHERRUAU \textsc{Anthony}\\
         POUPELIN \textsc{Bastien}\\
         THEBAUDIN \textsc{Corentin}\\
+        
+        TUTEUR: \textsc{M.LARDEUX}\\
       \end{flushleft}
     \end{minipage}
     
@@ -58,31 +62,41 @@
 
 \section{Introduction}
 
-\paragraph{David albert Huffman}
+\paragraph{David Albert Huffman}
 
 \subparagraph{Qui est Huffman?}
 \subparagraph{}
-Il est un professeur né le 9 août 1925 et mort le 7 octobre 1999. Il est un pionnier dans le domaine informatique. Durant toute sa vie, Huffman apporta des contributions importantes à l'étude des machines à états finis. 
-Mais Huffman est principalement connu pour l'invention du codage de Huffman utilisé dans presque toutes les applications qui impliquent la compression et la transmission de données numériques comme les fax, les modems, les réseaux informatiques et la télévision à haute définition.
+Huffman est un professeur né le 9 août 1925 et mort le 7 octobre 1999. Il fut un pionnier dans le domaine informatique : Durant toute sa vie, Huffman apporta des contributions importantes à l'étude des machines à états finis. 
+Mais Huffman est principalement connu pour l'invention du codage de portant son nom, utilisé dans presque toutes les applications qui impliquent la compression et la transmission de données numériques comme les fax, les modems, les réseaux informatiques et la télévision à haute définition.
 Huffman contribua beaucoup au développement de différents domaines, notamment dans la théorie de l’information et du codage, où il a été un pionnier dont les découvertes sont à la base des systèmes de compression de fichiers informatiques dans toutes les machines de nos jours.
 
 \paragraph{Principe du codage de huffman}
 
 \subparagraph{}
-Le principe du codage de huffman repose sur la création d’un arbre composé de nœuds. Dans une phrase à coder on compte d’abord le nombre d’occurrence de chaque lettre. Chaque caractère constitue donc une feuille de l’arbre auquel on y associe sa valeur d’occurrence.
-Puis on crée l’arbre. On associe les deux nœuds ou feuilles avec les occurrences les plus faibles pour créer un nouveau nœud dont son occurrence et la somme des deux occurrences des feuilles. On fait cela jusqu’à qu’il en reste un qui devient la racine.
-Ensuite on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi pour obtenir le code binaire de chaque caractère on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
-
+Le principe du codage de huffman repose sur la création d’un arbre composé de nœuds. Dans une phrase à coder, on compte d’abord le nombre d’occurrence de chaque lettre. Chaque caractère constitue donc une feuille de l’arbre auquel on y associe sa valeur d’occurrence.
+A la suite de cela, l'arbre contenant les caractères du fichier à compresser est créé. On associe les deux nœuds ou feuilles avec les occurrences les plus faibles pour créer un nouveau nœud dont son occurrence et la somme des deux occurrences des feuilles. On fait cela jusqu’à qu’il en reste un qui devient la racine.
+Ensuite, on associe le code 0 pour la branche gauche et le code 1 pour la branche droite. Ainsi, pour obtenir le code binaire de chaque caractère, on parcours l’arbre à partir de la racine jusqu’au feuilles en rajoutant un 0 ou un 1 en fonction de la branche suivie.
+Ainsi, chaque caractère du fichier à coder sera remplacé par son codage correspondant lu dans l'arbre. Le fichier sera ainsi compressé, et le système de décompression suit la même logique mais dans le sens inverse: le fichier compressé sera lu et dans l'en-tête du fichier sera inscrit la table de codage du fichier. Dès qu'une suite de codage binaire correspond à un caractère, il est remplacé. On retrouve ainsi le texte originel sans perte.
 \clearpage
 \paragraph{Déroulement du projet}
 \subparagraph{}
-Pour réaliser le projet, nous nous sommes réparti le travail en 3 parties : 
+Pour réaliser le projet, nous nous sommes réparti le travail en 4 parties : 
 \begin{itemize}
 \item La fréquence des caractères du document source réalisée par Bastien
 \item La création de l'arbre binaire réalisée par Anthony
 \item Réalisation d'un dictionnaire listant le codage de chaque caractère réalisé par Corentin
 \item Mise en place de la compression et la décompression 
 \end{itemize}
+
+Chaque partie réalisée individuellement dépendant des précedentes, elles ne peuvent pas être testées intégralement. Il a donc fallu effectuer un travail de regroupement des blocs.
+
+\newline
+\begin{center}
+\includegraphics[width=1.2\textwidth]{planning.png}
+\end{center}
+\begin{center}
+Planning du projet
+\end{center}
 
 \clearpage
 \section{Compter la fréquence des caractères}
@@ -157,8 +171,16 @@ Pour réaliser ce bloc, il faudra utiliser l'arbre créé auparavant dans le blo
 Par exemple ici, on établira que pour chaque chemin vers la gauche emprunté, un "0" sera codé pour le caractère trouvé. Lorsque le chemin emprunté est celui du fils droit, le codage sera un "1".
 
 C'est pourquoi la réalisation de ce bloc se basera sur une boucle de lecture de l'arbre. 
-En premier temps la réalisation de cette lecture serait faite de manière préfixe, avec une variable binaire qui contiendrait le codage du caractère, s'incrémentant par un décalage de bit à chaque mouvement dans l'arbre jusqu'à attendre une feuille. 
+En premier temps la réalisation de cette lecture serait faite de manière préfixe, avec une variable binaire qui contiendrait le codage du caractère, s'incrémentant par un décalage de bit à chaque mouvement dans l'arbre jusqu'à attendre une feuille. Un ``0'' sera donc ajouté par un décalage à droite (``>>''), et un ``1'' sera ajouté par concaténation avec la fonction strcat.
 Par soucis de temps et de solutions, un second choix a été réalisé : L'arbre sera lu de haut en bas jusqu'à atteindre une feuille, le codage et le caractère sera écrit dans le fichier puis la feuille sera supprimée. La lecture sera relancée, jusqu'à ce que l'arbre soit vide.
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exemple_Table_Codage.png}
+\end{center}
+\begin{center}
+Exemple de dictionnaire obtenu 
+\end{center}
+
 
 \clearpage
 \section{Compression}
@@ -180,12 +202,12 @@ La décompression va lire le fichier compressé qui contient un en-tête et le f
 Pour décompresser le fichier on lit le fichier qui contient des 1 et des 0 puis on parcours l'arbres. Dès que l'on arrive a une feuille dans l'arbre alors on met la lettre trouvé dans 
 le fichier décompressé et on continue ainsi jusqu'à la fin du fichier.
 
-(A voir) La décompression peut se faire de deux manières : l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
+La décompression peut se faire de deux manières : l'en-tête peut contenir le dictionnaire et donc on lira le fichier compressé et on retrouvera le caractère correspondant au codage. Cette méthode est plus simple à réaliser pour l'en-tête, mais un peu plus complexe pour la décompression.
 La seconde méthode consiste à intégrer l'arbre dans l'en-tête, et on retrouvera le caractère en suivant le chemin suivi avec le codage du fichier compressé. Cette méthode est plus complexe pour intégrer l'arbre à l'en-tête, mais plus simple à la suite pour décompresser le fichier.
 
-\section{Comparaison différente compression}
-huffman est intéressant sur de gros fichiers mais pour un petit fichier le fichier originale est plus petit que celui compressé.
-On a fait un tableau récapitulatif de différente compression pour comparer a l'algorithme d'Huffman.
+\section{Comparaison de différentes manières de compression}
+Lorsque l'on compare différents outils de compression, Huffman est intéressant sur de gros fichiers en majorité. Mais lors de la compression d'un petit fichier, le fichier original est plus petit que celui compressé. Il n'est donc pas avantageux dans ce cas-ci.
+Voici d'aileurs un tableau récapitulatif de différentes compressions en comparaison de l'Algorithme d'Huffman.
 
 
 
@@ -193,7 +215,7 @@ On a fait un tableau récapitulatif de différente compression pour comparer a l
 \hline
 Type de compression &  taille du fichier & taille fichier compressé\\
 \hline
-Huffman & 8,5ko & 4,8\\
+Huffman & 8,5ko & 4,8ko\\
 
 \hline
 gzip&8,5ko&4ko\\
@@ -207,29 +229,31 @@ bzip2&8,5ko&3,8ko\\
 
 \newline
 \newline
-En comparant ces différents algorithme one remarque que l'algorithme d'Huffman a un bon taux de compression 
-avec un taux de 43\%. Bzip2 est celui avec le meilleur taux de compression de 55\%.
+
+En comparant ces différents algorithmes, on remarque que l'Algorithme d'Huffman a un bon taux de compression 
+avec un taux de 43\%. Bzip2 reste celui avec le meilleur taux de compression de 55\%.
 \newline
-On voit donc que l'algorithme d'huffman seul est assez efficace comparé aux autres format de compression.
+On voit donc que l'algorithme d'Huffman seul est assez efficace comparé aux autres format de compression. De plus, il a l'atout d'assurer aucune perte de données.
 
 
-\section{Amélioration}
+\section{Améliorations possibles}
 
-Notre code n'étant pas fini, de nombreux point peut être amélioré.
+Notre code n'étant pas fini, de nombreux point peut être améliorés car des méthodes ont été mises en place pour palier au manque de temps.
 
-\subparagraph{compression et décompression}
+\subparagraph{Compression et Décompression}
 Nous avons eu assez de mal a comprendre la mise en place des bits en c et c'est pour cela que la compression ne fonctionne pas.  
+Nous avions choisi d'abandonner l'en-tête du fichier de compression et donc lire directement dans la table de codage. Il serait donc possible, moyennant le fonctionnement de notre méthode, ajouter l'en-tête du fichier de compression contenant le dictionnaire dans un premier temps, et l'arbe dans un second temps.
+\subparagraph{Amélioration de l'arbre dans des cas particuliers :}
+Lorsqu'un fichier vide ou un fichier contenant deux caractères est traité, l'arbre ne peut être créé. Certe ce sont des cas assez particuliers et peu probables, mais cela reste un bug à traiter.
 
-\subparagraph{arbre :}
-Quand on a un fichier vide ou un fichier contenant deux caractères ce cas n'est pas géré pour la création de l'arbre.
-
-\subparagraph{encodage :}
+\subparagraph{Encodage :}
 Au lieu d'utiliser une liste qui contient le codage, on peut mettre cette table dans un fichier et pour faire la compression on lit ce fichier et le fichier source.
+Cette solution à été choisie par manque de temps, car la solution idéale n'a pu être mise en place à cause d'un problème d'écriture dans le fichier.
 \clearpage
 \section{Apport personnel}
 
-Ce projet nous a permis de nous améliorer dans le langage c, de voir comment gérer les caractères accentués. 
-Ils nous a aussi permis de revoir les listes , les arbres, la lecture et l'écriture de fichier. 
-On a ainsi pu voir la mise en place des bitwize en c malgré que cela ne soit pas implémenté dans notre code.
+Ce projet nous a permis de nous améliorer dans le langage C, en particulier de voir comment gérer les caractères accentués. 
+Ils nous a aussi permis de revoir les listes , les arbres, la lecture et l'écriture de fichier. Ces outils n'étaient pas clairs pour nous avant le projet, mais après avoir travaillé dessus, cette idée de liste et d'arbre nous paraît beaucoup plus claire.
+On a enfin pu voir la mise en place des bitwize en C, malgré que cela ne soit pas implémenté dans notre code par manque de temps et de réussite.
 
 \end{document}
